@@ -446,7 +446,7 @@ private:
     AP_OSD osd;
 #endif
     //CAPSTONE
-    bool CHARGED = true;
+    //bool CHARGED = true;
 
     // Altitude
     int32_t baro_alt;            // barometer altitude in cm above home
@@ -659,8 +659,8 @@ private:
     void update_altitude();
 
     //CAPSTONE Charging
-    void charged_takeoff(void);
-    void charged_return_to_station(void);
+    //void charged_takeoff(void);
+    //void charged_return_to_station(void);
 
     // Attitude.cpp
     float get_pilot_desired_yaw_rate(int16_t stick_angle);
