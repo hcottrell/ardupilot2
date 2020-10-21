@@ -106,6 +106,8 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
 #if RANGEFINDER_ENABLED == ENABLED
     SCHED_TASK(read_rangefinder,      20,    100),
 #endif
+    SCHED_TASK(charged_return_to_station, 20, 100),
+    SCHED_TASK(charged_takeoff, 20, 100),
 #if PROXIMITY_ENABLED == ENABLED
     SCHED_TASK_CLASS(AP_Proximity,         &copter.g2.proximity,        update,         200,  50),
 #endif
@@ -271,6 +273,31 @@ void Copter::fast_loop()
     }
 
     AP_Vehicle::fast_loop();
+}
+
+void Copter::charged_takeoff(void)
+{
+    // set charging to true after landing for charge
+    if (CHARGED == true && battery.capacity_remaining_pct() > 80) {
+        //start_takeoff(80);
+        CHARGED == false;
+
+    }
+
+}
+
+void Copter::charged_return_to_station(void)
+{
+    // set charging to true after landing for charge
+    if (CHARGED == false && battery.capacity_remaining_pct() < 20) {
+
+        //set_mode(6, MODE_REASON_BATTERY_FAILSAFE)
+        set_mode(Mode::Number::RTL, ModeReason::BATTERY_FAILSAFE)
+        //set_mode(Mode::Number::RTL, ModeReason::MODE_REASON_BATTERY_FAILSAFE)
+            //flightmodemode_rtl;
+        CHARGED = true;
+        //Set charging = true after landing somehow
+    }
 }
 
 // start takeoff to given altitude (for use by scripting)
